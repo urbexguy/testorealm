@@ -86,3 +86,15 @@ function commentPost(button) {
     post.appendChild(commentSection);
   }
 }
+if (currentUser) {
+  document.getElementById('welcome-user').textContent = `Welcome, ${currentUser.name || currentUser.email}`;
+}
+
+function logout() {
+  localStorage.removeItem('user');
+  window.location.href = "login.html";
+}
+
+function goToProfile() {
+  alert("Profile feature coming soon!");
+}
