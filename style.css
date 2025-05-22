@@ -144,7 +144,6 @@ video {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
-
 .video-post video {
   width: 100%;
   max-width: 400px;
@@ -200,4 +199,19 @@ video {
   padding: 8px 12px;
   font-size: 14px;
   cursor: pointer;
+}
+.comment-section {
+  margin-top: 10px;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+
+.comment-section input {
+  width: 80%;
+  padding: 5px;
+  margin-right: 5px;
+}
+
+.comment-section button {
+  padding: 5px 10px;
 }
