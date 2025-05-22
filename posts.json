@@ -1,12 +1,14 @@
 [
   {
     "id": 1,
+    "user": "Ali",
     "video": "videos/video1.mp4",
     "likes": 0,
     "comments": []
   },
   {
     "id": 2,
+    "user": "Omar",
     "video": "videos/video2.mp4",
     "likes": 0,
     "comments": []
