@@ -8,12 +8,6 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
-
-  <div id="top-bar">
-  <span id="welcome-user"></span>
-  <button onclick="goToProfile()">👤 Profile</button>
-  <button onclick="logout()">🚪 Logout</button>
-</div>
   
   <div id="g_id_onload"
        data-client_id="1025141205427-pk9a4asuonh3htbatkg3uic4sm8und0m.apps.googleusercontent.com"
@@ -37,9 +31,11 @@
   <div class="video-feed scroll-feed" id="video-feed"></div>
 
   <div class="hud">
-    <button onclick="goHome()">🏠 Home</button>
-    <button onclick="openSettings()">⚙️ Settings</button>
-  </div>
+  <button onclick="goHome()">🏠 Home</button>
+  <button onclick="openProfile()">👤 Profile</button>
+  <button onclick="openSettings()">⚙️ Settings</button>
+</div>
+
 
   <script type="module">
     // Import the functions you need from the SDKs you need
