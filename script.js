@@ -1,3 +1,10 @@
+const currentUser = JSON.parse(localStorage.getItem('user'));
+
+if (!currentUser) {
+  alert("You must be logged in to access this page.");
+  window.location.href = "login.html";
+}
+
 fetch('posts.json')
   .then(response => {
     if (!response.ok) throw new Error("HTTP status " + response.status);
