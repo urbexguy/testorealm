@@ -51,13 +51,6 @@ function likePost(button) {
 
 function commentPost(button) {
   const post = button.closest('.video-post');
-
-  if (!post) {
-    console.error("Could not find the video-post container.");
-    return;
-  }
-
-  // Check if the comment section already exists
   let commentSection = post.querySelector('.comment-section');
 
   if (!commentSection) {
@@ -86,4 +79,3 @@ function commentPost(button) {
     post.appendChild(commentSection);
   }
 }
-
