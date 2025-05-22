@@ -1,15 +1,71 @@
-[
-    {
-      "id": 1,
-      "video": "videos/video1.mp4",
-      "likes": 0,
-      "comments": []
-    },
-    {
-      "id": 2,
-      "video": "videos/video2.mp4",
-      "likes": 0,
-      "comments": []
+fetch('posts.json')
+  .then(response => {
+    if (!response.ok) throw new Error("HTTP status " + response.status);
+    return response.json();
+  })
+  .then(posts => {
+    const feed = document.getElementById('video-feed');
+    posts.forEach(post => {
+      const postDiv = document.createElement('div');
+      postDiv.className = 'video-post';
+
+      const commentsKey = `comments_${post.id}`;
+      const savedComments = JSON.parse(localStorage.getItem(commentsKey)) || [];
+
+      postDiv.innerHTML = `
+        <video src="${post.video}" controls></video>
+        <div class="post-actions">
+          <button onclick="likePost(this)">❤️ Like <span class="like-count">${post.likes}</span></button>
+          <button onclick="commentPost(this, ${post.id})">💬 Comment</button>
+        </div>
+        <div class="comment-section">
+          ${savedComments.map(c => `<p>${c}</p>`).join('')}
+        </div>
+      `;
+
+      feed.appendChild(postDiv);
+    });
+  })
+  .catch(error => {
+    console.error('❌ Error loading posts:', error);
+    document.getElementById('video-feed').innerHTML = "<p style='color: red;'>Failed to load posts. Check console.</p>";
+  });
+
+function likePost(button) {
+  const countSpan = button.querySelector('.like-count');
+  let count = parseInt(countSpan.textContent);
+  count++;
+  countSpan.textContent = count;
+}
+
+function commentPost(button, postId) {
+  const post = button.closest('.video-post');
+  const commentSection = post.querySelector('.comment-section');
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.placeholder = 'Add a comment...';
+
+  const sendBtn = document.createElement('button');
+  sendBtn.textContent = 'Send';
+
+  sendBtn.onclick = function () {
+    const commentText = input.value.trim();
+    if (commentText !== '') {
+      const comment = document.createElement('p');
+      comment.textContent = commentText;
+      commentSection.appendChild(comment);
+
+      // Save comment in localStorage
+      const commentsKey = `comments_${postId}`;
+      const existing = JSON.parse(localStorage.getItem(commentsKey)) || [];
+      existing.push(commentText);
+      localStorage.setItem(commentsKey, JSON.stringify(existing));
+
+      input.value = '';
     }
-  ]
-  
+  };
+
+  commentSection.appendChild(input);
+  commentSection.appendChild(sendBtn);
+}
