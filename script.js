@@ -9,13 +9,18 @@ fetch('posts.json')
       const postDiv = document.createElement('div');
       postDiv.className = 'video-post';
 
-      postDiv.innerHTML = `
-        <video src="${post.video}" controls></video>
-        <div class="post-actions">
-          <button onclick="likePost(this)">❤️ Like <span class="like-count">${post.likes}</span></button>
-          <button onclick="commentPost(this)">💬 Comment</button>
-        </div>
-      `;
+    postDiv.innerHTML = `
+  <div class="post-header">
+    <strong>📤 ${post.user || 'Unknown User'}</strong>
+  </div>
+  <div class="video-wrapper">
+    <video src="${post.video}" controls></video>
+    <div class="post-actions">
+      <button onclick="likePost(this)">❤️ Like <span class="like-count">${post.likes}</span></button>
+      <button onclick="commentPost(this)">💬 Comment</button>
+    </div>
+  </div>
+`;
 
       feed.appendChild(postDiv);
     });
