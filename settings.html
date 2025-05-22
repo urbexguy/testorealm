@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Settings</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Settings</h1>
+
+  <form id="settings-form">
+    <label>
+      Do you want to see Islamic posts?
+      <select id="islamicPreference">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+    </label>
+    <br><br>
+    <button type="submit">Save</button>
+  </form>
+
+  <script src="settings.js"></script>
+</body>
+</html>
+<div class="navbar">
+    <a href="index.html">
+        <button>Home</button>
+      </a>
+  <a href="settings.html">
+    <button>Settings</button>
+  </a>
+</div>
+<button onclick="logout()">🚪 Logout</button>
+
+<script>
+  function logout() {
+    localStorage.removeItem('user');
+    window.location.href = "login.html";
+  }
+</script>

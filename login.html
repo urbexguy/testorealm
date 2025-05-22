@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - TestoRealm</title>
+  <link rel="stylesheet" href="login.css">
+  
+  <!-- Google Login Client -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  
+  <!-- JWT decode -->
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+
+  <!-- Login Callback -->
+  <script>
+    function handleCredentialResponse(response) {
+      const data = jwt_decode(response.credential);
+      console.log("✅ User logged in:", data);
+      localStorage.setItem('user', JSON.stringify(data));
+      window.location.href = "index.html";
+    }
+  </script>
+</head>
+<body>
+  <div class="login-container">
+    <h1>Welcome to TestoRealm</h1>
+    <p>Login with your Google account to continue</p>
+
+    <!-- Google Sign-In Button -->
+    <div id="g_id_onload"
+         data-client_id="1025141205427-pk9a4asuonh3htbatkg3uic4sm8und0m.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false">
+    </div>
+
+    <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+    </div>
+  </div>
+
+  <!-- Navbar Script if needed -->
+  <script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0b0229;
+  font-family: Arial, sans-serif;
+  color: rgb(255, 217, 0);
+  overflow: hidden;
+}
+
+.video-feed {
+  height: 100vh;
+  width: 100vw;
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+.video-post {
+  height: 100vh;
+  width: 100%;
+  scroll-snap-align: start;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+video {
+  width: 90%;
+  max-height: 70vh;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.post-actions {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.post-actions button {
+  margin: 0 10px;
+  background-color: #1f1f1f;
+  border: none;
+  color: #ffffff;
+  padding: 10px 14px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.post-actions button:hover {
+  background-color: #333;
+}
+.hud {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #072c03;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+  z-index: 1000;
+  border-top: 1px solid #222;
+}
+
+.hud button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.hud button:hover {
+  color: #1e90ff;
+}
+.navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #072c03;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  z-index: 1000;
+}
+
+.navbar button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.navbar button:hover {
+  color: #0f0;
+}
+.comment-section {
+  margin-top: 10px;
+}
+
+.comment-section input {
+  padding: 5px;
+  width: 60%;
+  margin-right: 5px;
+}
+
+.comment-section button {
+  padding: 5px 10px;
+}
+.scroll-feed {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+
+.video-post {
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-post video {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+}
+.scroll-feed {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
