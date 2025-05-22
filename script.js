@@ -98,3 +98,12 @@ function logout() {
 function goToProfile() {
   alert("Profile feature coming soon!");
 }
+function openProfile() {
+  const currentUser = JSON.parse(localStorage.getItem('user'));
+  if (currentUser) {
+    alert(`👤 Profile:\nName: ${currentUser.name}\nEmail: ${currentUser.email}`);
+    // Later you can redirect to profile.html or show a profile panel
+  } else {
+    alert("❌ No user is logged in.");
+  }
+}
