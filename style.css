@@ -144,3 +144,35 @@ video {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
+
+.video-post video {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px;
+  border-radius: 10px;
+}
+
+.post-actions {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.comment-section {
+  padding: 0 10px;
+  text-align: left;
+}
+
+.comment-section input {
+  width: 80%;
+  padding: 6px;
+  margin-right: 5px;
+  border-radius: 5px;
+}
+
+.comment-section button {
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
