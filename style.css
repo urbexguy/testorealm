@@ -176,3 +176,28 @@ video {
   border-radius: 5px;
   cursor: pointer;
 }
+.video-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.video-wrapper video {
+  height: 400px; /* Change this as needed */
+  width: auto;
+  border-radius: 10px;
+}
+
+.post-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-left: 15px;
+}
+
+.post-actions button {
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
