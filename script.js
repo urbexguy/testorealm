@@ -13,38 +13,48 @@ if (currentUser) {
   }
 }
 
-// 3. Load and display posts
-fetch('posts.json')
-  .then(response => {
+// 3. Load and display posts from BOTH localStorage AND posts.json
+async function loadPosts() {
+  const feed = document.getElementById('video-feed');
+  let allPosts = [];
+
+  try {
+    const response = await fetch('posts.json');
     if (!response.ok) throw new Error("HTTP status " + response.status);
-    return response.json();
-  })
-  .then(posts => {
-    const feed = document.getElementById('video-feed');
-    posts.forEach((post, index) => {
-      const postDiv = document.createElement('div');
-      postDiv.className = 'video-post';
+    const jsonPosts = await response.json();
+    allPosts = allPosts.concat(jsonPosts);
+  } catch (error) {
+    console.error('❌ Error loading posts.json:', error);
+  }
 
-      postDiv.innerHTML = `
-        <div class="post-header">
-          <strong>📤 ${post.user || 'Unknown User'}</strong>
-        </div>
-        <div class="video-wrapper">
-          <video src="${post.video}" controls></video>
-          <div class="post-actions">
-            <button onclick="likePost(this, ${index})">❤️ Like <span class="like-count">${post.likes}</span></button>
-            <button onclick="commentPost(this)">💬 Comment</button>
-          </div>
-        </div>
-      `;
+  // Load posts from localStorage
+  const localPosts = JSON.parse(localStorage.getItem('posts')) || [];
+  allPosts = localPosts.concat(allPosts); // local posts first (newest)
 
-      feed.appendChild(postDiv);
-    });
-  })
-  .catch(error => {
-    console.error('❌ Error loading posts:', error);
-    document.getElementById('video-feed').innerHTML = "<p style='color: red;'>Failed to load posts. Check console.</p>";
+  // Display all posts
+  feed.innerHTML = ''; // Clear feed
+  allPosts.forEach((post, index) => {
+    const postDiv = document.createElement('div');
+    postDiv.className = 'video-post';
+
+    postDiv.innerHTML = `
+      <div class="post-header">
+        <strong>📤 ${post.user || 'Unknown User'}</strong>
+      </div>
+      <div class="video-wrapper">
+        <video src="${post.video}" controls></video>
+        <div class="post-actions">
+          <button onclick="likePost(this, ${index})">❤️ Like <span class="like-count">${post.likes}</span></button>
+          <button onclick="commentPost(this)">💬 Comment</button>
+        </div>
+      </div>
+    `;
+
+    feed.appendChild(postDiv);
   });
+}
+
+loadPosts();
 
 // 4. Like button functionality (limit to 1 like per user per post)
 function likePost(button, postIndex) {
@@ -94,17 +104,16 @@ function commentPost(button) {
   }
 }
 
-// 6. Logout function (used from settings)
+// 6. Logout function
 function logout() {
   localStorage.removeItem('user');
   window.location.href = "login.html";
 }
 
-// 7. Open profile (HUD profile button)
+// 7. Open profile
 function openProfile() {
   if (currentUser) {
     alert(`👤 Profile:\nName: ${currentUser.name}\nEmail: ${currentUser.email}`);
-    // Optional: redirect to profile.html later
   } else {
     alert("❌ No user is logged in.");
   }
