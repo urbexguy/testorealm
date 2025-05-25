@@ -15,13 +15,16 @@ document.getElementById('upload-form').addEventListener('submit', function (e) {
   reader.onload = function (event) {
     const videoDataURL = event.target.result;
 
-    const post = {
-      id: Date.now(),
-      user: user,
-      video: videoDataURL,
-      description: description,
-      likes: 0
-    };
+   const user = JSON.parse(localStorage.getItem('user')) || { name: 'Guest' };
+
+const newPost = {
+  id: Date.now(),
+  video: videoURL,
+  likes: 0,
+  description: description,
+  user: user.name || 'Guest'
+};
+
 
     let posts = JSON.parse(localStorage.getItem('user_posts')) || [];
     posts.unshift(post);
