@@ -1,5 +1,15 @@
 function goTo(page) {
-    alert("You clicked on: " + page);
-    // Later: Replace with real navigation logic like window.location.href = 'feed.html'
+  switch (page) {
+    case "home":
+      window.location.href = "index.html";
+      break;
+    case "profile":
+      window.location.href = "profile.html";
+      break;
+    case "settings":
+      window.location.href = "settings.html";
+      break;
+    default:
+      alert("Unknown page: " + page);
   }
-  
+}
