@@ -110,11 +110,4 @@ function logout() {
   window.location.href = "login.html";
 }
 
-// 7. Open profile
-function openProfile() {
-  if (currentUser) {
-    alert(`👤 Profile:\nName: ${currentUser.name}\nEmail: ${currentUser.email}`);
-  } else {
-    alert("❌ No user is logged in.");
-  }
-}
+
