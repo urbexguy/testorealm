@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload - TestoRealm</title>
+  <link rel="stylesheet" href="upload.css">
+</head>
+<body>
+  <div class="upload-container">
+    <h1>Upload Video</h1>
+
+    <form id="uploadForm">
+      <label for="videoFile">Choose a video:</label>
+      <input type="file" id="videoFile" accept="video/*" required>
+
+      <label for="description">Description:</label>
+      <textarea id="description" placeholder="Write something..."></textarea>
+
+      <button type="submit">Upload</button>
+    </form>
+
+    <div id="uploadStatus"></div>
+  </div>
+
+  <script src="upload.js"></script>
+</body>
+</html>
