@@ -1,3 +1,42 @@
+const localPosts = JSON.parse(localStorage.getItem('user_posts')) || [];
+
+// Optional: combine local and default posts
+fetch('posts.json')
+  .then(response => {
+    if (!response.ok) throw new Error("HTTP status " + response.status);
+    return response.json();
+  })
+  .then(defaultPosts => {
+    const allPosts = [...localPosts, ...defaultPosts]; // show user posts first
+    loadPosts(allPosts);
+  })
+  .catch(error => {
+    console.error('❌ Error loading posts:', error);
+    loadPosts(localPosts); // fallback to local posts
+  });
+
+function loadPosts(posts) {
+  const feed = document.getElementById('video-feed');
+  posts.forEach(post => {
+    const postDiv = document.createElement('div');
+    postDiv.className = 'video-post';
+
+    postDiv.innerHTML = `
+      <div class="post-header">
+        <strong>📤 ${post.user || 'Unknown User'}</strong>
+      </div>
+      <video src="${post.video}" controls></video>
+      <p>${post.description || ''}</p>
+      <div class="post-actions">
+        <button onclick="likePost(this)">❤️ Like <span class="like-count">${post.likes}</span></button>
+        <button onclick="commentPost(this)">💬 Comment</button>
+      </div>
+    `;
+
+    feed.appendChild(postDiv);
+  });
+}
+
 const currentUser = JSON.parse(localStorage.getItem('user'));
 
 if (!currentUser) {
