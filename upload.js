@@ -1,36 +1,35 @@
-document.getElementById('uploadForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-  
-    const fileInput = document.getElementById('videoFile');
-    const descInput = document.getElementById('description');
-    const statusDiv = document.getElementById('uploadStatus');
-  
-    const file = fileInput.files[0];
-    const desc = descInput.value.trim();
-  
-    if (!file) {
-      statusDiv.textContent = "Please choose a video.";
-      return;
-    }
-  
-    const videoURL = URL.createObjectURL(file);
-  
-    // Simulate saving to posts.json (in reality this would be a backend task)
-    let posts = JSON.parse(localStorage.getItem('posts')) || [];
-  
-    const newPost = {
+document.getElementById('upload-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const videoInput = document.getElementById('video-file');
+  const video = videoInput.files[0];
+  const description = document.getElementById('description').value.trim();
+  const user = JSON.parse(localStorage.getItem('user'))?.name || 'Unknown User';
+
+  if (!video) {
+    alert("Please select a video file.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function (event) {
+    const videoDataURL = event.target.result;
+
+    const post = {
       id: Date.now(),
-      user: JSON.parse(localStorage.getItem('user'))?.name || "Anonymous",
-      video: videoURL,
-      likes: 0,
-      description: desc
+      user: user,
+      video: videoDataURL,
+      description: description,
+      likes: 0
     };
-  
-    posts.unshift(newPost);
-    localStorage.setItem('posts', JSON.stringify(posts));
-  
-    statusDiv.textContent = "✅ Video uploaded!";
-    fileInput.value = "";
-    descInput.value = "";
-  });
-  
+
+    let posts = JSON.parse(localStorage.getItem('user_posts')) || [];
+    posts.unshift(post);
+    localStorage.setItem('user_posts', JSON.stringify(posts));
+
+    alert("Video uploaded successfully!");
+    window.location.href = 'index.html'; // redirect to home
+  };
+
+  reader.readAsDataURL(video);
+});
