@@ -27,15 +27,11 @@ document.addEventListener("DOMContentLoaded", () => {
   
       postDiv.innerHTML = `
         <p><strong>Description:</strong> ${post.description || "No description"}</p>
-        <video src="${post.video}" controls></video>
+        <video src="${post.video}" controls width="300"></video>
         <p><strong>Likes:</strong> ${post.likes}</p>
       `;
   
       userPostsContainer.appendChild(postDiv);
     });
   });
-  
-  function goBack() {
-    window.location.href = "index.html";
-  }
   
