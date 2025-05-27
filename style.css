@@ -1,9 +1,11 @@
+/* === RESET === */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* === GENERAL === */
 body {
   background-color: #0b0229;
   font-family: Arial, sans-serif;
@@ -11,58 +13,101 @@ body {
   overflow: hidden;
 }
 
-.video-feed {
+/* === VIDEO FEED === */
+.video-feed, .scroll-feed {
   height: 100vh;
   width: 100vw;
-  scroll-snap-type: y mandatory;
   overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
 
+/* === INDIVIDUAL POST === */
 .video-post {
   height: 100vh;
   width: 100%;
   scroll-snap-align: start;
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-video {
+/* === VIDEO STYLING === */
+.video-post video,
+.video-wrapper video {
   width: 90%;
-  max-height: 70vh;
+  max-width: 400px;
+  max-height: 80vh;
+  object-fit: contain;
+  display: block;
   border-radius: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
+/* === VIDEO WRAPPER === */
+.video-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* === POST ACTIONS === */
 .post-actions {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
 }
 
 .post-actions button {
-  margin: 0 10px;
   background-color: #1f1f1f;
   border: none;
   color: #ffffff;
-  padding: 10px 14px;
+  padding: 8px 12px;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
 }
 
 .post-actions button:hover {
   background-color: #333;
 }
-.hud {
+
+/* === COMMENT SECTION === */
+.comment-section {
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+  max-width: 500px;
+  border-top: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+.comment-section input {
+  width: 75%;
+  padding: 6px;
+  margin-right: 5px;
+  border-radius: 5px;
+  border: 1px solid #444;
+}
+
+.comment-section button {
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #444;
+  color: white;
+  border: none;
+}
+
+/* === HUD (BOTTOM NAVIGATION) === */
+.hud, .navbar {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
+  right: 0;
   background-color: #072c03;
   display: flex;
   justify-content: space-around;
@@ -72,30 +117,7 @@ video {
   border-top: 1px solid #222;
 }
 
-.hud button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.hud button:hover {
-  color: #1e90ff;
-}
-.navbar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #072c03;
-  display: flex;
-  justify-content: space-around;
-  padding: 10px 0;
-  z-index: 1000;
-}
-
-.navbar button {
+.hud button, .navbar button {
   background: none;
   border: none;
   color: white;
@@ -103,115 +125,6 @@ video {
   cursor: pointer;
 }
 
-.navbar button:hover {
-  color: #0f0;
-}
-.comment-section {
-  margin-top: 10px;
-}
-
-.comment-section input {
-  padding: 5px;
-  width: 60%;
-  margin-right: 5px;
-}
-
-.comment-section button {
-  padding: 5px 10px;
-}
-.scroll-feed {
-  height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-}
-
-.video-post {
-  height: 100vh;
-  scroll-snap-align: start;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.video-post video {
-  width: 100%;
-  height: auto;
-  max-height: 80vh;
-  object-fit: contain;
-}
-.scroll-feed {
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-}
-.video-post video {
-  width: 100%;
-  max-width: 400px;
-  height: auto;
-  display: block;
-  margin: 0 auto 10px;
-  border-radius: 10px;
-}
-
-.post-actions {
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.comment-section {
-  padding: 0 10px;
-  text-align: left;
-}
-
-.comment-section input {
-  width: 80%;
-  padding: 6px;
-  margin-right: 5px;
-  border-radius: 5px;
-}
-
-.comment-section button {
-  padding: 6px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.video-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.video-wrapper video {
-  height: 400px; /* Change this as needed */
-  width: auto;
-  border-radius: 10px;
-}
-
-.post-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-left: 15px;
-}
-
-.post-actions button {
-  padding: 8px 12px;
-  font-size: 14px;
-  cursor: pointer;
-}
-.comment-section {
-  margin-top: 10px;
-  border-top: 1px solid #ccc;
-  padding-top: 10px;
-}
-
-.comment-section input {
-  width: 80%;
-  padding: 5px;
-  margin-right: 5px;
-}
-
-.comment-section button {
-  padding: 5px 10px;
+.hud button:hover, .navbar button:hover {
+  color: #1e90ff;
 }
