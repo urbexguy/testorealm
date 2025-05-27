@@ -6,6 +6,14 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <div class="navbar">
+    <button onclick="goTo('index.html')">🏠 Home</button>
+    <button onclick="goTo('settings.html')">⚙️ Settings</button>
+    <button onclick="goTo('profile.html')">👤 Profile</button>
+    <button onclick="logout()">🚪 Logout</button>
+  </div>
+
   <h1>Settings</h1>
 
   <form id="settings-form">
@@ -21,25 +29,13 @@
   </form>
 
   <script src="settings.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    function logout() {
+      localStorage.removeItem('user');
+      window.location.href = "login.html";
+    }
+  </script>
+
 </body>
 </html>
-<div class="navbar">
-    <a href="index.html">
-        <button>Home</button>
-      </a>
-  <a href="settings.html">
-    <button>Settings</button>
-  </a>
-  <a href="profile.html">
-    <button>profile</button>
-  </a>
-</div>
-
-<button onclick="logout()">🚪 Logout</button>
-
-<script>
-  function logout() {
-    localStorage.removeItem('user');
-    window.location.href = "login.html";
-  }
-</script>
