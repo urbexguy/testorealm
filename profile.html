@@ -7,6 +7,15 @@
   <link rel="stylesheet" href="profile.css" />
 </head>
 <body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <button onclick="goTo('home')">🏠 Home</button>
+    <button onclick="goTo('settings')">⚙️ Settings</button>
+    <button onclick="goTo('profile')">👤 Profile</button>
+  </div>
+
+  <!-- Profile Content -->
   <div class="profile-container">
     <h1>User Profile</h1>
     <div id="user-details"></div>
@@ -14,20 +23,11 @@
     <h2>Your Uploaded Posts</h2>
     <div id="user-posts"></div>
 
-    <button onclick="goBack()">⬅️ Back to Feed</button>
+    <button onclick="goTo('home')">⬅️ Back to Feed</button>
   </div>
 
+  <!-- Scripts -->
+  <script src="nav.js"></script> <!-- ✅ Needed for goTo() to work -->
   <script src="profile.js"></script>
 </body>
 </html>
-<div class="navbar">
-    <a href="index.html">
-        <button>Home</button>
-      </a>
-  <a href="settings.html">
-    <button>Settings</button>
-  </a>
-  <a href="profile.html">
-    <button>profile</button>
-  </a>
-</div>
