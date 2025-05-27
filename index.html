@@ -8,7 +8,8 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
-  
+
+  <!-- Google Login -->
   <div id="g_id_onload"
        data-client_id="1025141205427-pk9a4asuonh3htbatkg3uic4sm8und0m.apps.googleusercontent.com"
        data-context="signin"
@@ -26,26 +27,23 @@
        data-logo_alignment="left">
   </div>
 
+  <!-- Main Content -->
   <h1>Welcome to TestoRealm</h1>
 
   <div class="video-feed scroll-feed" id="video-feed"></div>
 
+  <!-- HUD Navigation -->
   <div class="hud">
-  <button onclick="goHome()">🏠 Home</button>
-  <button onclick="openProfile()">👤 Profile</button>
-  <button onclick="openSettings()">⚙️ Settings</button>
-</div>
+    <button onclick="goTo('home')">🏠 Home</button>
+    <button onclick="goTo('profile')">👤 Profile</button>
+    <button onclick="goTo('settings')">⚙️ Settings</button>
+  </div>
 
-
+  <!-- Firebase Init -->
   <script type="module">
-    // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-  
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
     const firebaseConfig = {
       apiKey: "AIzaSyBJ6CC5pASnY5xbKtF_1uL0bot4iPDIb-Q",
       authDomain: "testorealm.firebaseapp.com",
@@ -55,26 +53,21 @@
       appId: "1:1025141205427:web:1a8bf5e6d46055edb543c6",
       measurementId: "G-XQFKYGF7PR"
     };
-  
-    // Initialize Firebase
+
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
   </script>
-  
-  <script src="script.js"></script>
+
+  <!-- Google Login Callback -->
   <script>
     function handleCredentialResponse(response) {
       console.log("✅ ID token: " + response.credential);
       alert("✅ Login successful!");
     }
-
-    function goHome() {
-      window.location.href = "index.html";
-    }
-
-    function openSettings() {
-      window.location.href = "settings.html";
-    }
   </script>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+  <script src="nav.js"></script> <!-- ✅ THIS IS WHAT ALLOWS THE PROFILE BUTTON TO WORK -->
 </body>
 </html>
