@@ -18,6 +18,7 @@ async function loadPosts() {
   const feed = document.getElementById('video-feed');
   let allPosts = [];
 
+  // Load posts from posts.json
   try {
     const response = await fetch('posts.json');
     if (!response.ok) throw new Error("HTTP status " + response.status);
@@ -31,8 +32,10 @@ async function loadPosts() {
   const localPosts = JSON.parse(localStorage.getItem('posts')) || [];
   allPosts = localPosts.concat(allPosts); // local posts first (newest)
 
-  // Display all posts
-  feed.innerHTML = ''; // Clear feed
+  // Clear the feed
+  feed.innerHTML = '';
+
+  // Render each post
   allPosts.forEach((post, index) => {
     const postDiv = document.createElement('div');
     postDiv.className = 'video-post';
@@ -44,7 +47,9 @@ async function loadPosts() {
       <div class="video-wrapper">
         <video src="${post.video}" controls></video>
         <div class="post-actions">
-          <button onclick="likePost(this, ${index})">❤️ Like <span class="like-count">${post.likes}</span></button>
+          <button onclick="likePost(this, ${index})">
+            ❤️ Like <span class="like-count">${post.likes || 0}</span>
+          </button>
           <button onclick="commentPost(this)">💬 Comment</button>
         </div>
       </div>
@@ -56,7 +61,7 @@ async function loadPosts() {
 
 loadPosts();
 
-// 4. Like button functionality (limit to 1 like per user per post)
+// 4. Like button functionality (1 like per user per post)
 function likePost(button, postIndex) {
   const likeKey = `liked_${postIndex}_${currentUser.email}`;
   if (localStorage.getItem(likeKey)) {
@@ -65,7 +70,7 @@ function likePost(button, postIndex) {
   }
 
   const countSpan = button.querySelector('.like-count');
-  let count = parseInt(countSpan.textContent);
+  let count = parseInt(countSpan.textContent) || 0;
   count++;
   countSpan.textContent = count;
 
@@ -104,10 +109,8 @@ function commentPost(button) {
   }
 }
 
-// 6. Logout function
+// 6. Logout function (can be reused across pages)
 function logout() {
   localStorage.removeItem('user');
   window.location.href = "login.html";
 }
-
-
