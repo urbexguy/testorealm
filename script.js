@@ -40,20 +40,26 @@ async function loadPosts() {
     const postDiv = document.createElement('div');
     postDiv.className = 'video-post';
 
-    postDiv.innerHTML = `
-      <div class="post-header">
-        <strong>📤 ${post.user || 'Unknown User'}</strong>
-      </div>
-      <div class="video-wrapper">
-        <video src="${post.video}" controls></video>
-        <div class="post-actions">
-          <button onclick="likePost(this, ${index})">
-            ❤️ Like <span class="like-count">${post.likes || 0}</span>
-          </button>
-          <button onclick="commentPost(this)">💬 Comment</button>
-        </div>
-      </div>
-    `;
+// Replace the postDiv.innerHTML section in loadPosts() function with this:
+postDiv.innerHTML = `
+  <div class="post-header">
+    <strong>📤 ${post.user || 'Unknown User'}</strong>
+    <span class="post-time">${post.timestamp ? new Date(post.timestamp).toLocaleDateString() : ''}</span>
+  </div>
+  <div class="video-wrapper">
+    <video src="${post.video}" controls></video>
+    <div class="post-description">
+      <p>${post.description || ''}</p>
+    </div>
+    <div class="post-actions">
+      <button onclick="likePost(this, ${index})">
+        ❤️ Like <span class="like-count">${post.likes || 0}</span>
+      </button>
+      <button onclick="commentPost(this)">💬 Comment</button>
+      <button onclick="sharePost('${post.video}')">📤 Share</button>
+    </div>
+  </div>
+`;
 
     feed.appendChild(postDiv);
   });
