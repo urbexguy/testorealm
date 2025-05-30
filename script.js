@@ -120,3 +120,21 @@ function logout() {
   localStorage.removeItem('user');
   window.location.href = "login.html";
 }
+// Add this function at the end of script.js
+function sharePost(videoUrl) {
+  if (navigator.share) {
+    navigator.share({
+      title: 'Check out this video on TestoRealm!',
+      text: 'Amazing video I found on TestoRealm',
+      url: window.location.href
+    });
+  } else {
+    // Fallback for browsers that don't support Web Share API
+    const shareText = `Check out this amazing video on TestoRealm: ${window.location.href}`;
+    navigator.clipboard.writeText(shareText).then(() => {
+      alert('📋 Link copied to clipboard!');
+    }).catch(() => {
+      alert('📤 Share this link: ' + window.location.href);
+    });
+  }
+}
