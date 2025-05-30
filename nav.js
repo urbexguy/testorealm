@@ -3,6 +3,9 @@ function goTo(page) {
     case "home":
       window.location.href = "index.html";
       break;
+    case "upload":
+      window.location.href = "upload.html";
+      break;
     case "profile":
       window.location.href = "profile.html";
       break;
