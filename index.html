@@ -28,10 +28,27 @@
   </div>
 
   <!-- Main Content -->
-  <h1>Welcome to TestoRealm</h1>
+<h1 style="position: absolute; top: 20px; left: 20px; z-index: 100; font-size: 24px; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">TestoRealm</h1>
 
-  <div class="video-feed scroll-feed" id="video-feed"></div>
+<div class="video-feed scroll-feed" id="video-feed">
+  <div class="loading" id="loading">
+    <div>⏳ Loading videos...</div>
+  </div>
+</div>
 
+<!-- Global Comment Section -->
+<div class="comment-section" id="global-comment-section">
+  <div class="comment-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+    <h3>💬 Comments</h3>
+    <button onclick="closeComments()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">✕</button>
+  </div>
+  <div id="comments-list"></div>
+  <div style="display: flex; gap: 10px; margin-top: 15px;">
+    <input type="text" id="comment-input" placeholder="Add a comment..." />
+    <button onclick="addComment()" style="padding: 12px 20px; border: none; border-radius: 25px; background: #ff3b5c; color: white; cursor: pointer;">Send</button>
+  </div>
+</div>
+ 
   <!-- HUD Navigation -->
 <div class="hud">
   <button onclick="goTo('home')">🏠 Home</button>
