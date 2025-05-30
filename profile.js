@@ -101,3 +101,38 @@ function editDescription(postId, button) {
     alert("✅ Description updated successfully!");
   }
 }
+// Add this function at the end of profile.js
+function calculateStats() {
+  const posts = JSON.parse(localStorage.getItem("user_posts")) || [];
+  const totalVideos = posts.length;
+  const totalLikes = posts.reduce((sum, post) => sum + (post.likes || 0), 0);
+  const averageLikes = totalVideos > 0 ? Math.round(totalLikes / totalVideos) : 0;
+  
+  // Find most liked video
+  const mostLikedVideo = posts.reduce((max, post) => 
+    (post.likes || 0) > (max.likes || 0) ? post : max, { likes: 0 });
+
+  const statsContainer = document.getElementById("user-stats");
+  statsContainer.innerHTML = `
+    <div class="stat-box" style="text-align: center; margin: 10px; padding: 10px; background: white; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+      <h4 style="color: #007bff; margin: 0;">📹 Total Videos</h4>
+      <p style="font-size: 24px; font-weight: bold; margin: 5px 0; color: #333;">${totalVideos}</p>
+    </div>
+    <div class="stat-box" style="text-align: center; margin: 10px; padding: 10px; background: white; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+      <h4 style="color: #dc3545; margin: 0;">❤️ Total Likes</h4>
+      <p style="font-size: 24px; font-weight: bold; margin: 5px 0; color: #333;">${totalLikes}</p>
+    </div>
+    <div class="stat-box" style="text-align: center; margin: 10px; padding: 10px; background: white; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+      <h4 style="color: #28a745; margin: 0;">📈 Avg Likes</h4>
+      <p style="font-size: 24px; font-weight: bold; margin: 5px 0; color: #333;">${averageLikes}</p>
+    </div>
+    <div class="stat-box" style="text-align: center; margin: 10px; padding: 10px; background: white; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+      <h4 style="color: #ffc107; margin: 0;">🏆 Best Video</h4>
+      <p style="font-size: 16px; font-weight: bold; margin: 5px 0; color: #333;">${mostLikedVideo.likes || 0} likes</p>
+    </div>
+  `;
+}
+
+// Call this function in the DOMContentLoaded event (add this line after the posts.forEach loop)
+// Add this line after the posts.forEach loop in the DOMContentLoaded function:
+calculateStats();
