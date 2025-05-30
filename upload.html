@@ -5,6 +5,16 @@
   <title>Upload - TestoRealm</title>
   <link rel="stylesheet" href="upload.css">
 </head>
+<script>
+  // Check if user is logged in before allowing upload
+  document.addEventListener('DOMContentLoaded', function() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+      alert('You must be logged in to upload videos!');
+      window.location.href = 'login.html';
+    }
+  });
+  </script>
 <body>
   <div class="upload-container">
     <h1>Upload Video</h1>
@@ -15,6 +25,15 @@
 
       <label for="description">Description:</label>
       <textarea id="description" placeholder="Write something..."></textarea>
+
+      <label for="description">Description:</label>
+<textarea id="description" placeholder="Write something..."></textarea>
+
+<!-- Video Preview -->
+<div id="video-preview" style="display: none; margin: 10px 0;">
+  <p>Preview:</p>
+  <video id="preview-video" controls style="width: 100%; max-height: 200px; border-radius: 5px;"></video>
+</div>
 
       <button type="submit">Upload</button>
     </form>
