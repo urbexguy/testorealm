@@ -4,41 +4,42 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Profile - TestoRealm</title>
-  <link rel="stylesheet" href="profile.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Navbar -->
-<div class="navbar">
-  <button onclick="goTo('home')">🏠 Home</button>
-  <button onclick="goTo('upload')">📤 Upload</button>
-  <button onclick="goTo('settings')">⚙️ Settings</button>
-  <button onclick="goTo('profile')">👤 Profile</button>
-</div>
-
   <!-- Profile Content -->
   <div class="profile-container">
-    <h1>User Profile</h1>
+    <h1>👤 User Profile</h1>
     <div id="user-details"></div>
 
+    <!-- Statistics Section -->
+    <div class="stats-container" style="background: #2a1f4a; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid rgba(255, 217, 0, 0.2);">
+      <h3 style="color: rgb(255, 217, 0); text-align: center;">📊 Your Statistics</h3>
+      <div id="user-stats" style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+        <!-- Stats will be populated by JavaScript -->
+      </div>
+    </div>
 
-<!-- ADD THIS NEW STATISTICS SECTION -->
-<div class="stats-container" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;">
-  <h3 style="color: #333; text-align: center;">📊 Your Statistics</h3>
-  <div id="user-stats" style="display: flex; justify-content: space-around; flex-wrap: wrap;">
-    <!-- Stats will be populated by JavaScript -->
-  </div>
-</div>
-
-    <h2>Your Uploaded Posts</h2>
+    <h2>📹 Your Uploaded Posts</h2>
     <div id="user-posts"></div>
 
-    <button onclick="goTo('home')">⬅️ Back to Feed</button>
-    <button onclick="goTo('upload')">📤 Upload Video</button>
+    <div style="display: flex; gap: 10px; margin-top: 20px; justify-content: center;">
+      <button onclick="goTo('home')" class="btn">⬅️ Back to Feed</button>
+      <button onclick="goTo('upload')" class="btn">📤 Upload Video</button>
+    </div>
+  </div>
+
+  <!-- Unified HUD Navigation -->
+  <div class="hud">
+    <button onclick="goTo('home')">🏠<br>Home</button>
+    <button onclick="goTo('upload')">📤<br>Upload</button>
+    <button onclick="goTo('profile')">👤<br>Profile</button>
+    <button onclick="goTo('settings')">⚙️<br>Settings</button>
   </div>
 
   <!-- Scripts -->
-  <script src="nav.js"></script> <!-- ✅ Needed for goTo() to work -->
+  <script src="nav.js"></script>
   <script src="profile.js"></script>
   <script src="upload.js"></script>
 </body>
