@@ -50,13 +50,18 @@
   </div>
  
   <!-- Unified HUD Navigation -->
-  <div class="hud">
-    <button onclick="goTo('home')">🏠<br>Home</button>
-    <button onclick="goTo('upload')">📤<br>Upload</button>
-    <button onclick="goTo('profile')">👤<br>Profile</button>
-    <button onclick="goTo('settings')">⚙️<br>Settings</button>
-  </div>
+  <did id="nav-placeholder"></div>
 
+    <script>
+      fetch('nav.html')
+       .then(res => res.text())
+       .then(html => {
+    
+        document.getElementById('nav-placeholder').innerHTML = html;
+       });
+       </script>
+    <link rel="stylesheet" href="nav.css">
+    
   <!-- Firebase Init -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
