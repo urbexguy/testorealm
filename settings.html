@@ -2,38 +2,76 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Settings</title>
+  <title>Settings - TestoRealm</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   
-  <div class="navbar">
-    <button onclick="goTo('home')">🏠 Home</button>
-    <button onclick="goTo('settings')">⚙️ Settings</button>
-    <button onclick="goTo('profile')">👤 Profile</button>
-    <button onclick="logout()">🚪 Logout</button>
+  <div class="page-container">
+    <h1>⚙️ Settings</h1>
+
+    <form id="settings-form" style="display: flex; flex-direction: column; gap: 20px;">
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 8px; color: rgb(255, 217, 0); font-weight: bold;">
+          🕌 Do you want to see Islamic posts?
+        </label>
+        <select id="islamicPreference" style="width: 100%;">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 8px; color: rgb(255, 217, 0); font-weight: bold;">
+          🔔 Notification Preferences
+        </label>
+        <select id="notificationPreference" style="width: 100%;">
+          <option value="all">All Notifications</option>
+          <option value="important">Important Only</option>
+          <option value="none">None</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 8px; color: rgb(255, 217, 0); font-weight: bold;">
+          🌙 Theme Preference
+        </label>
+        <select id="themePreference" style="width: 100%;">
+          <option value="dark">Dark Theme</option>
+          <option value="blue">Blue Theme (Current)</option>
+          <option value="auto">Auto</option>
+        </select>
+      </div>
+
+      <button type="submit" style="margin-top: 10px;">💾 Save Settings</button>
+    </form>
+
+    <div style="margin-top: 30px; padding: 20px; background: #2a1f4a; border-radius: 8px; border: 1px solid rgba(255, 217, 0, 0.2);">
+      <h3 style="color: rgb(255, 217, 0); margin-bottom: 15px;">🚪 Account Actions</h3>
+      <button onclick="logout()" style="background: linear-gradient(45deg, #dc3545, #c82333); border: 1px solid rgba(255, 217, 0, 0.3); width: 100%;">
+        🚪 Logout
+      </button>
+    </div>
   </div>
 
-  <h1>Settings</h1>
-
-  <form id="settings-form">
-    <label>
-      Do you want to see Islamic posts?
-      <select id="islamicPreference">
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-      </select>
-    </label>
-    <br><br>
-    <button type="submit">Save</button>
-  </form>
+  <!-- Unified HUD Navigation -->
+  <div class="hud">
+    <button onclick="goTo('home')">🏠<br>Home</button>
+    <button onclick="goTo('upload')">📤<br>Upload</button>
+    <button onclick="goTo('profile')">👤<br>Profile</button>
+    <button onclick="goTo('settings')">⚙️<br>Settings</button>
+  </div>
 
   <script src="settings.js"></script>
   <script src="nav.js"></script>
   <script>
     function logout() {
-      localStorage.removeItem('user');
-      window.location.href = "login.html";
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('user');
+        localStorage.removeItem('user_posts');
+        alert('✅ Logged out successfully!');
+        window.location.href = "login.html";
+      }
     }
   </script>
 
