@@ -1,4 +1,4 @@
-// 1. Check if the user is logged in
+// Auth check
 const currentUser = JSON.parse(localStorage.getItem('user'));
 if (!currentUser) {
   alert("You must be logged in to access this page.");
@@ -8,39 +8,37 @@ if (!currentUser) {
 let allPosts = [];
 let currentPostIndex = 0;
 let isLoading = false;
+let hasMorePosts = true;
 
-// 2. Load and display posts
+// Load posts function
 async function loadPosts() {
-  if (isLoading) return;
+  if (isLoading || !hasMorePosts) return;
   isLoading = true;
 
   const feed = document.getElementById('video-feed');
   const loading = document.getElementById('loading');
   
   try {
-    // Load posts from posts.json
-    try {
-      const response = await fetch('posts.json');
-      if (response.ok) {
-        const jsonPosts = await response.json();
-        allPosts = allPosts.concat(jsonPosts);
+    // Load from posts.json (first time only)
+    if (allPosts.length === 0) {
+      try {
+        const response = await fetch('posts.json');
+        if (response.ok) {
+          const jsonPosts = await response.json();
+          allPosts = jsonPosts;
+        }
+      } catch (error) {
+        console.error('❌ Error loading posts.json:', error);
       }
-    } catch (error) {
-      console.error('❌ Error loading posts.json:', error);
+
+      // Load from localStorage
+      const localPosts = JSON.parse(localStorage.getItem('posts')) || [];
+      allPosts = localPosts.concat(allPosts);
     }
 
-    // Load posts from localStorage
-    const localPosts = JSON.parse(localStorage.getItem('posts')) || [];
-    allPosts = localPosts.concat(allPosts);
-
-    // Remove loading indicator
     if (loading) loading.style.display = 'none';
-
-    // Clear the feed
-    feed.innerHTML = '';
-
-    // Render posts
     renderPosts();
+    setupInfiniteScroll();
   } catch (error) {
     console.error('Error loading posts:', error);
   }
@@ -48,8 +46,10 @@ async function loadPosts() {
   isLoading = false;
 }
 
+// Render posts
 function renderPosts() {
   const feed = document.getElementById('video-feed');
+  feed.innerHTML = '';
   
   allPosts.forEach((post, index) => {
     const postDiv = document.createElement('div');
@@ -59,16 +59,15 @@ function renderPosts() {
     postDiv.innerHTML = `
       <video 
         src="${post.video}" 
-        muted
         loop
         playsinline
         preload="metadata"
-        onloadeddata="handleVideoLoad(this)"
+        muted
       ></video>
       
       <div class="post-overlay">
         <div class="post-header">
-          <strong>@${post.user || 'Unknown User'}</strong>
+          <strong>@${post.user || 'Unknown'}</strong>
           <span class="post-time">${post.timestamp ? formatTime(post.timestamp) : ''}</span>
         </div>
         <div class="post-description">
@@ -94,79 +93,97 @@ function renderPosts() {
     feed.appendChild(postDiv);
   });
 
-  // Initialize video intersection observer
   setupVideoObserver();
+  checkLikedPosts();
 }
 
-// 3. Video auto-play functionality
+// Video observer for autoplay
 function setupVideoObserver() {
   const videos = document.querySelectorAll('.video-post video');
   
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       const video = entry.target;
-      if (entry.isIntersecting) {
-        // Play video when in view
+      if (entry.isIntersectionRatio > 0.5) {
+        // Play video when 50% visible
         video.play().catch(e => console.log('Autoplay prevented'));
         video.currentTime = 0;
       } else {
-        // Pause video when out of view
         video.pause();
       }
     });
-  }, {
-    threshold: 0.5 // Video must be 50% visible
-  });
+  }, { threshold: 0.5 });
 
-  videos.forEach(video => observer.observe(video));
+  videos.forEach(video => {
+    observer.observe(video);
+    // Tap to pause/play
+    video.addEventListener('click', () => {
+      video.paused ? video.play() : video.pause();
+    });
+  });
 }
 
-// 4. Handle video loading
-function handleVideoLoad(video) {
-  video.addEventListener('click', () => {
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
+// Infinite scroll
+function setupInfiniteScroll() {
+  const feed = document.querySelector('.video-feed');
+  
+  feed.addEventListener('scroll', () => {
+    const { scrollTop, scrollHeight, clientHeight } = feed;
+    if (scrollTop + clientHeight >= scrollHeight - 100) {
+      loadMorePosts();
     }
   });
 }
 
-// 5. Like functionality
+function loadMorePosts() {
+  if (isLoading || !hasMorePosts) return;
+  
+  // Duplicate posts for infinite effect (in real app, fetch from server)
+  const morePosts = [...allPosts].map(post => ({
+    ...post,
+    id: Date.now() + Math.random()
+  }));
+  
+  allPosts = allPosts.concat(morePosts);
+  renderPosts();
+}
+
+// Like function
 function likePost(postIndex, button) {
   const likeKey = `liked_${postIndex}_${currentUser.email}`;
   const likeCountSpan = button.querySelector('.like-count');
   
   if (localStorage.getItem(likeKey)) {
-    // Unlike
     localStorage.removeItem(likeKey);
     button.classList.remove('liked');
     let count = parseInt(likeCountSpan.textContent) || 0;
     count = Math.max(0, count - 1);
     likeCountSpan.textContent = count;
-    
-    // Update post data
-    if (allPosts[postIndex]) {
-      allPosts[postIndex].likes = count;
-      updatePostsInStorage();
-    }
   } else {
-    // Like
     localStorage.setItem(likeKey, true);
     button.classList.add('liked');
     let count = parseInt(likeCountSpan.textContent) || 0;
     count++;
     likeCountSpan.textContent = count;
-    
-    // Update post data
-    if (allPosts[postIndex]) {
-      allPosts[postIndex].likes = count;
-      updatePostsInStorage();
-    }
+  }
+  
+  if (allPosts[postIndex]) {
+    allPosts[postIndex].likes = parseInt(likeCountSpan.textContent);
+    updatePostsInStorage();
   }
 }
 
-// 6. Comment functionality
+// Check liked posts
+function checkLikedPosts() {
+  document.querySelectorAll('.like-btn').forEach((btn, index) => {
+    const likeKey = `liked_${index}_${currentUser.email}`;
+    if (localStorage.getItem(likeKey)) {
+      btn.classList.add('liked');
+    }
+  });
+}
+
+// Comments
 let currentCommentPostIndex = null;
 
 function openComments(postIndex) {
@@ -174,7 +191,6 @@ function openComments(postIndex) {
   const commentSection = document.getElementById('global-comment-section');
   const commentsList = document.getElementById('comments-list');
   
-  // Load existing comments
   const post = allPosts[postIndex];
   const comments = post.comments || [];
   
@@ -183,7 +199,7 @@ function openComments(postIndex) {
     const commentDiv = document.createElement('div');
     commentDiv.style.cssText = 'margin-bottom: 10px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 10px;';
     commentDiv.innerHTML = `
-      <strong style="color: #ff3b5c;">${comment.user}</strong>
+      <strong style="color: #fe2c55;">${comment.user}</strong>
       <p style="margin: 5px 0 0 0;">${comment.text}</p>
     `;
     commentsList.appendChild(commentDiv);
@@ -209,26 +225,22 @@ function addComment() {
     timestamp: new Date().toISOString()
   };
   
-  // Add to post
   if (!allPosts[currentCommentPostIndex].comments) {
     allPosts[currentCommentPostIndex].comments = [];
   }
   allPosts[currentCommentPostIndex].comments.push(comment);
   
-  // Update storage
   updatePostsInStorage();
   
-  // Update comment count in UI
   const postDiv = document.querySelector(`[data-index="${currentCommentPostIndex}"]`);
   const commentCount = postDiv.querySelector('.comment-count');
   commentCount.textContent = allPosts[currentCommentPostIndex].comments.length;
   
-  // Add to comments list
   const commentsList = document.getElementById('comments-list');
   const commentDiv = document.createElement('div');
   commentDiv.style.cssText = 'margin-bottom: 10px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 10px;';
   commentDiv.innerHTML = `
-    <strong style="color: #ff3b5c;">${comment.user}</strong>
+    <strong style="color: #fe2c55;">${comment.user}</strong>
     <p style="margin: 5px 0 0 0;">${comment.text}</p>
   `;
   commentsList.appendChild(commentDiv);
@@ -236,7 +248,7 @@ function addComment() {
   input.value = '';
 }
 
-// 7. Share functionality
+// Share function
 function sharePost(videoUrl) {
   if (navigator.share) {
     navigator.share({
@@ -245,35 +257,29 @@ function sharePost(videoUrl) {
       url: window.location.href
     });
   } else {
-    const shareText = `Check out this amazing video on TestoRealm: ${window.location.href}`;
-    navigator.clipboard.writeText(shareText).then(() => {
-      alert('📋 Link copied to clipboard!');
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      alert('📋 Link copied!');
     }).catch(() => {
-      alert('📤 Share this link: ' + window.location.href);
+      alert('📤 Share: ' + window.location.href);
     });
   }
 }
 
-// 8. Utility functions
+// Utility functions
 function formatTime(timestamp) {
   const date = new Date(timestamp);
   const now = new Date();
   const diff = now - date;
   
-  if (diff < 3600000) { // Less than 1 hour
-    return Math.floor(diff / 60000) + 'm ago';
-  } else if (diff < 86400000) { // Less than 1 day
-    return Math.floor(diff / 3600000) + 'h ago';
-  } else {
-    return Math.floor(diff / 86400000) + 'd ago';
-  }
+  if (diff < 3600000) return Math.floor(diff / 60000) + 'm';
+  if (diff < 86400000) return Math.floor(diff / 3600000) + 'h';
+  return Math.floor(diff / 86400000) + 'd';
 }
 
 function updatePostsInStorage() {
   const localPosts = JSON.parse(localStorage.getItem('posts')) || [];
   const localPostsCount = localPosts.length;
   
-  // Update only local posts (first N posts in allPosts array)
   for (let i = 0; i < Math.min(localPostsCount, allPosts.length); i++) {
     localPosts[i] = allPosts[i];
   }
@@ -281,28 +287,18 @@ function updatePostsInStorage() {
   localStorage.setItem('posts', JSON.stringify(localPosts));
 }
 
-// 9. Logout function
-function logout() {
-  localStorage.removeItem('user');
-  window.location.href = "login.html";
-}
-
-// 10. Initialize
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
   loadPosts();
   
-  // Close comments when clicking outside
+  // Close comments on outside click
   document.addEventListener('click', (e) => {
     const commentSection = document.getElementById('global-comment-section');
-    if (e.target === commentSection) {
-      closeComments();
-    }
+    if (e.target === commentSection) closeComments();
   });
   
-  // Handle comment input enter key
+  // Enter key for comments
   document.getElementById('comment-input').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      addComment();
-    }
+    if (e.key === 'Enter') addComment();
   });
 });
