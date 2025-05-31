@@ -22,13 +22,13 @@ body {
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .video-feed::-webkit-scrollbar,
 .scroll-feed::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+  display: none;
 }
 
 /* === INDIVIDUAL POST === */
@@ -43,23 +43,21 @@ body {
   background: #000;
 }
 
-/* === VIDEO STYLING === */
+/* === VIDEO STYLING (16:9 ASPECT RATIO) === */
 .video-post video {
-  width: 100%;
-  height: 100%;
+  width: min(100vw, calc(100vh * 9/16));
+  height: min(100vh, calc(100vw * 16/9));
   object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
+  border-radius: 8px;
   z-index: 1;
 }
 
 /* === POST OVERLAY === */
 .post-overlay {
   position: absolute;
-  bottom: 80px;
+  bottom: 120px;
   left: 20px;
-  right: 80px;
+  right: 100px;
   z-index: 10;
   pointer-events: none;
 }
@@ -72,110 +70,86 @@ body {
 .post-header {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
-  gap: 10px;
+  margin-bottom: 8px;
+  gap: 8px;
 }
 
 .post-header strong {
   color: white;
-  font-size: 16px;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  font-size: 15px;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
 }
 
 .post-time {
-  color: rgba(255,255,255,0.7);
-  font-size: 12px;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  color: rgba(255,255,255,0.8);
+  font-size: 13px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
 }
 
 /* === POST DESCRIPTION === */
-.post-description {
-  margin-bottom: 15px;
-}
-
 .post-description p {
   color: white;
   font-size: 14px;
-  line-height: 1.4;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-  max-width: 250px;
+  line-height: 1.3;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  max-width: 280px;
+  margin: 0;
 }
 
-/* === SIDE ACTIONS (RIGHT SIDE) === */
+/* === SIDE ACTIONS (TIKTOK STYLE) === */
 .side-actions {
   position: absolute;
-  right: 15px;
-  bottom: 100px;
+  right: 12px;
+  bottom: 120px;
   z-index: 10;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   align-items: center;
 }
 
 .action-btn {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   border: none;
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(10px);
+  background: rgba(42, 42, 42, 0.8);
   color: white;
-  font-size: 20px;
+  font-size: 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   position: relative;
+  backdrop-filter: blur(4px);
 }
 
-.action-btn:hover {
-  background: rgba(255,255,255,0.3);
-  transform: scale(1.1);
+.action-btn:active {
+  transform: scale(0.95);
 }
 
 .action-btn.liked {
-  background: rgba(255,59,92,0.8);
-  color: white;
+  background: #fe2c55;
+  animation: heartBeat 0.3s ease;
+}
+
+@keyframes heartBeat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
 }
 
 .like-count, .comment-count {
   position: absolute;
-  bottom: -25px;
+  top: 52px;
   font-size: 12px;
   color: white;
+  font-weight: 600;
   text-shadow: 0 1px 2px rgba(0,0,0,0.8);
   min-width: 20px;
   text-align: center;
-}
-
-/* === BOTTOM ACTIONS === */
-.bottom-actions {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  z-index: 10;
-  display: flex;
-  gap: 10px;
-}
-
-.bottom-actions button {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 25px;
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(10px);
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.bottom-actions button:hover {
-  background: rgba(255,255,255,0.3);
 }
 
 /* === HUD (BOTTOM NAVIGATION) === */
@@ -184,30 +158,35 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.9);
   backdrop-filter: blur(20px);
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 15px 0;
+  padding: 12px 0;
   z-index: 1000;
   border-top: 1px solid rgba(255,255,255,0.1);
+  height: 70px;
 }
 
 .hud button, .navbar button {
   background: none;
   border: none;
   color: white;
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
-  padding: 8px;
+  padding: 8px 12px;
   border-radius: 8px;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
 
-.hud button:hover, .navbar button:hover {
+.hud button:active, .navbar button:active {
+  transform: scale(0.95);
   background: rgba(255,255,255,0.1);
-  transform: scale(1.1);
 }
 
 /* === COMMENT SECTION === */
@@ -216,14 +195,15 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,0.9);
+  background: rgba(0,0,0,0.95);
   backdrop-filter: blur(20px);
   padding: 20px;
   transform: translateY(100%);
   transition: transform 0.3s ease;
   z-index: 1001;
-  max-height: 50vh;
+  max-height: 60vh;
   overflow-y: auto;
+  border-radius: 20px 20px 0 0;
 }
 
 .comment-section.active {
@@ -231,45 +211,51 @@ body {
 }
 
 .comment-section input {
-  width: 100%;
-  padding: 12px;
+  flex: 1;
+  padding: 12px 16px;
   border: none;
   border-radius: 25px;
   background: rgba(255,255,255,0.1);
   color: white;
-  font-size: 16px;
-  margin-top: 10px;
+  font-size: 14px;
 }
 
 .comment-section input::placeholder {
   color: rgba(255,255,255,0.6);
 }
 
-/* === LOADING INDICATOR === */
+/* === LOADING === */
 .loading {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  font-size: 18px;
+  font-size: 16px;
   color: white;
 }
 
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
-  .post-overlay {
-    bottom: 100px;
-    right: 70px;
+  .video-post video {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
   }
   
   .side-actions {
-    right: 10px;
-    bottom: 120px;
+    right: 8px;
+    bottom: 100px;
+    gap: 14px;
   }
   
   .action-btn {
-    width: 45px;
-    height: 45px;
-    font-size: 18px;
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+  }
+  
+  .post-overlay {
+    right: 80px;
+    bottom: 100px;
   }
 }
